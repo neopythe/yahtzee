@@ -1,4 +1,4 @@
-/** Rule for Yahtzee scoring.
+/** Rule for Yahtzee scoring
  *
  * This is an "abstract class"; the real rules are subclasses of these.
  * This stores all parameters passed into it as properties on the instance
@@ -32,7 +32,7 @@ class Rule {
   }
 }
 
-/** Given a sought-for val, return sum of dice of that val.
+/** Given a sought-for val, return sum of dice of that val
  *
  * Used for rules like "sum of all ones"
  */
@@ -43,7 +43,7 @@ class TotalOneNumber extends Rule {
   }
 }
 
-/** Given a required # of same dice, return sum of all dice.
+/** Given a required # of same dice, return sum of all dice
  *
  * Used for rules like "sum of all dice when there is a 3-of-kind"
  */
@@ -65,7 +65,7 @@ class FullHouse extends Rule {
   }
 }
 
-/** Check for small straights. */
+/** Check for small straights */
 
 class SmallStraight extends Rule {
   evalRoll = (dice) => {
@@ -81,7 +81,7 @@ class SmallStraight extends Rule {
   }
 }
 
-/** Check for large straights. */
+/** Check for large straights */
 
 class LargeStraight extends Rule {
   evalRoll = (dice) => {
@@ -92,7 +92,7 @@ class LargeStraight extends Rule {
   }
 }
 
-/** Check if all dice are same. */
+/** Check if all dice are same */
 
 class Yahtzee extends Rule {
   evalRoll = (dice) => {
@@ -101,7 +101,7 @@ class Yahtzee extends Rule {
   }
 }
 
-// ones, twos, etc score as sum of that value
+// ones, twos, etc. score as sum of that value
 const ones = new TotalOneNumber({ val: 1 })
 const twos = new TotalOneNumber({ val: 2 })
 const threes = new TotalOneNumber({ val: 3 })
@@ -109,7 +109,7 @@ const fours = new TotalOneNumber({ val: 4 })
 const fives = new TotalOneNumber({ val: 5 })
 const sixes = new TotalOneNumber({ val: 6 })
 
-// three/four of kind score as sum of all dice
+// three/four of a kind score as sum of all dice
 const threeOfKind = new SumDistro({ count: 3 })
 const fourOfKind = new SumDistro({ count: 4 })
 
@@ -123,7 +123,7 @@ const largeStraight = new LargeStraight({ score: 40 })
 // yahtzee scores as 50
 const yahtzee = new Yahtzee({ score: 50 })
 
-// for chance, can view as some of all dice, requiring at least 0 of a kind
+// sum of all dice
 const chance = new SumDistro({ count: 0 })
 
 export {
