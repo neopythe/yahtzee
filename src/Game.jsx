@@ -142,6 +142,7 @@ class Game extends Component {
             dice={this.state.dice}
             locked={gameOver ? Array(NUM_DICE).fill(true) : this.state.locked}
             handleClick={this.toggleLocked}
+            disabled={this.state.rollsLeft < 1}
           />
           <div className="flex justify-center w-full relative">
             <button

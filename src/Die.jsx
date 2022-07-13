@@ -22,22 +22,26 @@ class Die extends Component {
   }
 
   icon() {
-    if (this.props.val === 1) return <BsDice1Fill />
-    if (this.props.val === 2) return <BsDice2Fill />
-    if (this.props.val === 3) return <BsDice3Fill />
-    if (this.props.val === 4) return <BsDice4Fill />
-    if (this.props.val === 5) return <BsDice5Fill />
-    if (this.props.val === 6) return <BsDice6Fill />
+    const { val } = this.props
+    if (val === 1) return <BsDice1Fill />
+    if (val === 2) return <BsDice2Fill />
+    if (val === 3) return <BsDice3Fill />
+    if (val === 4) return <BsDice4Fill />
+    if (val === 5) return <BsDice5Fill />
+    if (val === 6) return <BsDice6Fill />
   }
 
   render() {
+    const { locked, val, disabled } = this.props
+
     return (
       <label
-        className="Die text-5xl flex"
-        style={{ opacity: this.props.locked ? '0.2' : '1' }}
+        className={`Die text-5xl flex ${locked && 'Die-locked'}`}
+        // optional cursor style for disabled buttons
+        // disabled={disabled}
       >
         <button onClick={this.handleClick} className="w-fit h-fit"></button>
-        {this.icon(this.props.val)}
+        {this.icon(val)}
       </label>
     )
   }
