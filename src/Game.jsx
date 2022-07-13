@@ -52,8 +52,7 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    this.setState({ rollsLeft: 2 })
-    // this.animateRoll()
+    this.animateRoll()
   }
 
   updateHighScore(newHighScore) {
