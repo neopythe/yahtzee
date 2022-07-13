@@ -102,20 +102,24 @@ class Game extends Component {
   }
 
   disableRow(row) {
-    this.setState({
-      highScore: this.updateHighScore(this.total()),
-    })
-    row.classList.add('RuleRow-disabled')
+    if (!this.state.isRolling) {
+      this.setState({
+        highScore: this.updateHighScore(this.total()),
+      })
+      row.classList.add('RuleRow-disabled')
+    }
   }
 
   doScore(rulename, ruleFn) {
     // evaluate this ruleFn with the dice and score this rulename
-    this.setState((st) => ({
-      scores: { ...st.scores, [rulename]: ruleFn(this.state.dice) },
-      rollsLeft: NUM_ROLLS,
-      locked: Array(NUM_DICE).fill(false),
-    }))
-    this.roll()
+    if (!this.state.isRolling) {
+      this.setState((st) => ({
+        scores: { ...st.scores, [rulename]: ruleFn(this.state.dice) },
+        rollsLeft: NUM_ROLLS,
+        locked: Array(NUM_DICE).fill(false),
+      }))
+      this.animateRoll()
+    }
   }
 
   toggleLocked(idx) {
@@ -137,31 +141,40 @@ class Game extends Component {
     )
   }
 
+  displayRollInfo() {
+    const messages = [
+      'no rolls left',
+      'one roll left',
+      'two rolls left',
+      'rolling...',
+    ]
+    return messages[this.state.rollsLeft]
+  }
+
   render() {
-    const gameOver = !Object.values(this.state.scores).includes(null)
+    const { dice, locked, rollsLeft, isRolling, scores, highScore } = this.state
+    const gameOver = !Object.values(scores).includes(null)
 
     return (
       <div className="flex flex-col justify-center items-center rounded-lg overflow-hidden bg-white shadow-2xl w-96 select-none">
         <header className="card-body bg-sky-500 w-full">
-          {/* <h1 className="font-bold text-5xl text-white">Yahtzee!</h1> */}
           <div className="w-2/3 mx-auto">
             <img src={logo} alt="Yahtzee logo" />
           </div>
           <Dice
             dice={this.state.dice}
-            locked={gameOver ? Array(NUM_DICE).fill(true) : this.state.locked}
+            locked={gameOver ? Array(NUM_DICE).fill(true) : locked}
             handleClick={this.toggleLocked}
-            disabled={this.state.rollsLeft < 1}
-            rolling={this.state.isRolling}
+            disabled={rollsLeft < 1}
+            rolling={isRolling}
           />
           <div className="flex justify-center w-full relative">
             <button
               className="btn btn-sm lowercase bg-green-500 hover:bg-green-400 text-white border-none px-12 font-bold"
-              disabled={this.state.rollsLeft < 1 || gameOver}
+              disabled={rollsLeft < 1 || isRolling || gameOver}
               onClick={this.animateRoll}
             >
-              {this.state.rollsLeft} roll{this.state.rollsLeft !== 1 && 's'}{' '}
-              left
+              {gameOver ? 'no rolls left' : this.displayRollInfo()}
             </button>
             <IoMdRefreshCircle
               onClick={this.refresh}
@@ -170,12 +183,12 @@ class Game extends Component {
           </div>
         </header>
         <ScoreTable
-          dice={this.state.dice}
+          dice={dice}
           doScore={this.doScore}
-          scores={this.state.scores}
+          scores={scores}
           total={this.total()}
           disableRow={this.disableRow}
-          highScore={this.state.highScore}
+          highScore={highScore}
           updateHighScore={this.updateHighScore}
           gameOver={gameOver}
         />
