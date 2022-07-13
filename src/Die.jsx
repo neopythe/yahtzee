@@ -32,11 +32,13 @@ class Die extends Component {
   }
 
   render() {
-    const { locked, val, disabled } = this.props
+    const { locked, val, disabled, rolling } = this.props
 
     return (
       <label
-        className={`Die text-5xl flex ${locked && 'Die-locked'}`}
+        className={`Die text-5xl flex ${locked && 'Die-locked'} ${
+          rolling && 'Die-rolling'
+        }`}
         // optional cursor style for disabled buttons
         // disabled={disabled}
       >

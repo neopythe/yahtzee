@@ -20,6 +20,7 @@ class Game extends Component {
       ),
       locked: Array(NUM_DICE).fill(false),
       rollsLeft: NUM_ROLLS,
+      isRolling: false,
       scores: {
         ones: null,
         twos: null,
@@ -39,6 +40,7 @@ class Game extends Component {
     }
     this.baseState = this.state
 
+    this.animateRoll = this.animateRoll.bind(this)
     this.roll = this.roll.bind(this)
     this.disableRow = this.disableRow.bind(this)
     this.doScore = this.doScore.bind(this)
@@ -50,8 +52,8 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    this.roll()
     this.setState({ rollsLeft: 2 })
+    // this.animateRoll()
   }
 
   updateHighScore(newHighScore) {
@@ -72,6 +74,12 @@ class Game extends Component {
     this.enableRows()
   }
 
+  animateRoll() {
+    this.setState({ isRolling: true }, () => {
+      setTimeout(this.roll, 1000)
+    })
+  }
+
   roll(evt) {
     // roll dice whose indexes are in reroll
     this.setState((st) => ({
@@ -80,6 +88,7 @@ class Game extends Component {
       ),
       locked: st.rollsLeft > 1 ? st.locked : Array(NUM_DICE).fill(true),
       rollsLeft: st.rollsLeft - 1,
+      isRolling: false,
     }))
   }
 
@@ -111,7 +120,7 @@ class Game extends Component {
 
   toggleLocked(idx) {
     // toggle whether idx is in locked or not
-    if (this.state.rollsLeft < 1) return
+    if (this.state.rollsLeft < 1 || this.state.isRolling) return
     this.setState((st) => ({
       locked: [
         ...st.locked.slice(0, idx),
@@ -143,12 +152,13 @@ class Game extends Component {
             locked={gameOver ? Array(NUM_DICE).fill(true) : this.state.locked}
             handleClick={this.toggleLocked}
             disabled={this.state.rollsLeft < 1}
+            rolling={this.state.isRolling}
           />
           <div className="flex justify-center w-full relative">
             <button
               className="btn btn-sm lowercase bg-green-500 hover:bg-green-400 text-white border-none px-12 font-bold"
               disabled={this.state.rollsLeft < 1 || gameOver}
-              onClick={this.roll}
+              onClick={this.animateRoll}
             >
               {this.state.rollsLeft} roll{this.state.rollsLeft !== 1 && 's'}{' '}
               left
