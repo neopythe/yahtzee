@@ -52,9 +52,6 @@ class ScoreTable extends Component {
     return (
       <div className="card-body w-full -mt-2">
         <section>
-          <h2 className="font-semibold mb-4 underline underline-offset-[8px] decoration-green-400">
-            upper
-          </h2>
           <table cellSpacing="0" className="w-full text-sm lowercase">
             <tbody className="scoreTable">
               <RuleRow
@@ -98,9 +95,6 @@ class ScoreTable extends Component {
           </table>
         </section>
         <section>
-          <h2 className="font-semibold mb-4 underline underline-offset-[8px] decoration-green-400">
-            lower
-          </h2>
           <table cellSpacing="0" className="w-full text-sm lowercase">
             <tbody className="scoreTable">
               <RuleRow
