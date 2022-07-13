@@ -156,7 +156,7 @@ class ScoreTable extends Component {
         <section className="flex justify-between mt-2">
           <div className="flex items-center gap-4">
             <span className="font-bold text-lg text-yellow-500">
-              {highScore}
+              {newHighScore ? total : highScore}
             </span>
             <h2 className="font-semibold">high score</h2>
           </div>
